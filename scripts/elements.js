@@ -1,5 +1,10 @@
-import { DEFAULT_HOURLY_WAGE } from "./constants.js";
-import { convertMinutesToTime, getElementByIdOrThrow, toPrice } from "./util.js";
+import { DEFAULT_HOURLY_WAGE, ONE_DAY_MINUTES } from "./constants.js";
+import {
+  convertMinutesToTime,
+  convertTimeToInt,
+  getElementByIdOrThrow,
+  toPrice,
+} from "./util.js";
 
 export const element = {
   hourlyWage: /**@type {HTMLInputElement}*/ (
@@ -46,7 +51,7 @@ export const resetAll = () => {
     errorMsg,
   } = element;
 
-  setResult(NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN);
+  setResult();
   hourlyWage.value = `${DEFAULT_HOURLY_WAGE}`;
   startTime.value = "";
   endTime.value = "";
@@ -70,14 +75,14 @@ export const resetAll = () => {
  * @param {number} totalWage - 合計（円）
  */
 export const setResult = (
-  workMinutes,
-  lateNightMinutes,
-  breakMinutes,
-  breakLateNightMinutes,
-  basicWage,
-  overtimeWage,
-  lateNightWage,
-  totalWage
+  workMinutes = NaN,
+  lateNightMinutes = NaN,
+  breakMinutes = NaN,
+  breakLateNightMinutes = NaN,
+  basicWage = NaN,
+  overtimeWage = NaN,
+  lateNightWage = NaN,
+  totalWage = NaN
 ) => {
   const {
     workTime,
@@ -98,4 +103,36 @@ export const setResult = (
   overtimeWageElement.textContent = toPrice(overtimeWage);
   lateNightWageElement.textContent = toPrice(lateNightWage);
   totalWageElement.textContent = toPrice(totalWage);
+};
+
+/** 計算に必要な値を取得する */
+export const getInputValues = () => {
+  /** 始業時刻 */
+  const start = convertTimeToInt(element.startTime.value);
+  /** 終業時刻 */
+  const end = (() => {
+    // 終業時刻が始業時刻より前の場合は翌日とみなす
+    const end = convertTimeToInt(element.endTime.value);
+    return end + (end < start ? ONE_DAY_MINUTES : 0);
+  })();
+  /** 休憩開始時刻 */
+  const breakStart = (() => {
+    // 休憩開始時刻が始業時刻より前の場合は翌日とみなす
+    const breakStart = convertTimeToInt(element.breakStartTime.value);
+    return breakStart + (breakStart < start ? ONE_DAY_MINUTES : 0);
+  })();
+  /** 休憩終了時刻 */
+  const breakEnd = (() => {
+    // 休憩終了時刻が休憩開始時刻より前の場合は翌日とみなす
+    const breakEnd = convertTimeToInt(element.breakEndTime.value);
+    return breakEnd + (breakEnd < breakStart ? ONE_DAY_MINUTES : 0);
+  })();
+
+  return {
+    hourlyWage: +element.hourlyWage.value,
+    start,
+    end,
+    breakStart,
+    breakEnd,
+  };
 };

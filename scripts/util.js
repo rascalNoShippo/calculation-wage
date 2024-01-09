@@ -2,9 +2,11 @@
  * HH:MM 形式の時刻を当日0時からの経過分数に変換する
  * @param {string} time - HH:MM 形式の時刻（未入力の場合はNaNを返す）
  * @returns {number}
+ * @throws {SyntaxError} 時刻の形式が不正な場合
  */
 export const convertTimeToInt = (time) => {
   if (!time) return NaN;
+  if (!/^\d{1,2}:\d{2}$/.test(time)) throw new SyntaxError("時刻の形式が不正です");
   const [hour, minute] = time.split(":").map((s) => +s);
   return hour * 60 + minute;
 };
@@ -47,10 +49,30 @@ export const toPrice = (value) =>
 /**
  * getElementById の結果を返すが、要素が見つからない場合は例外を投げる
  * @param {string} id
- * @returns
+ * @returns {HTMLElement}
+ * @throws {Error} 要素が見つからない場合
  */
 export const getElementByIdOrThrow = (id) => {
   const e = document.getElementById(id);
   if (e) return e;
-  throw new Error(`id=${id} の要素が見つかりません`);
+
+  const message = `id=${id} の要素が見つかりません`;
+  alert(message);
+  throw new Error(message);
 };
+
+/**
+ * “(翌日)” を表示する
+ * @param {HTMLElement} element - 表示する要素
+ * @param {boolean} isNextDay - 翌日かどうか
+ */
+export const showNextDay = (element, isNextDay) => {
+  element.textContent = isNextDay ? "(翌日)" : "";
+};
+
+/**
+ * 分を時間に変換する(60で割る)
+ * @param {number} min - 分
+ * @returns {number}
+ */
+export const minToHour = (min) => min / 60;
