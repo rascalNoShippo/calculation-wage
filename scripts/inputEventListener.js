@@ -1,6 +1,6 @@
-import { LEGAL_WORK_MINUTES, ONE_DAY_MINUTES, PREMIUM_WAGE_RATE } from "./constants";
-import { element, setResult } from "./elements";
-import { calcOverlap, convertTimeToInt } from "./util";
+import { LEGAL_WORK_MINUTES, ONE_DAY_MINUTES, PREMIUM_WAGE_RATE } from "./constants.js";
+import { element, setResult } from "./elements.js";
+import { calcOverlap, convertTimeToInt } from "./util.js";
 
 export const handleInput = () => {
   const value = (() => {

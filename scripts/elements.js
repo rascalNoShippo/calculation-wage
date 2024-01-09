@@ -1,5 +1,5 @@
-import { DEFAULT_HOURLY_WAGE } from "./constants";
-import { convertMinutesToTime, getElementByIdOrThrow, toPrice } from "./util";
+import { DEFAULT_HOURLY_WAGE } from "./constants.js";
+import { convertMinutesToTime, getElementByIdOrThrow, toPrice } from "./util.js";
 
 export const element = {
   hourlyWage: /**@type {HTMLInputElement}*/ (
