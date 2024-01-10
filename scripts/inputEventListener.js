@@ -32,15 +32,17 @@ export const handleInput = () => {
       const min = breakEnd - breakStart;
       return Number.isNaN(min) ? 0 : min;
     })();
-    /** 勤務時間（分、休憩時間を除く） */
-    const workMinutes = end - start - breakMinutes;
 
+    // 休憩時間が勤務時間に含まれているかチェック
     (() => {
       const breakMinutesInWork = calcOverlap(start, end, breakStart, breakEnd);
       if (Number.isNaN(breakMinutesInWork)) return;
       if (breakMinutesInWork !== breakMinutes)
         throw new RangeError("休憩時間が勤務時間に含まれていません");
     })();
+
+    /** 勤務時間（分、休憩時間を除く） */
+    const workMinutes = end - start - breakMinutes;
 
     /** 基本給（円） */
     const basicWage = hourlyWage * minToHour(workMinutes);
