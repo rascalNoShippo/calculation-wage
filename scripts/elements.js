@@ -4,7 +4,7 @@ import {
   convertTimeToInt,
   getElementByIdOrThrow,
   toPrice,
-} from "./util.js";
+} from "./utils.js";
 
 export const element = {
   hourlyWage: /**@type {HTMLInputElement}*/ (

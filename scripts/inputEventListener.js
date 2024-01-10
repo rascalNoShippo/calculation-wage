@@ -9,7 +9,7 @@ import {
   convertTimeToInt,
   minToHour,
   showNextDay,
-} from "./util.js";
+} from "./utils.js";
 
 export const handleInput = () => {
   const { hourlyWage, start, end, breakStart, breakEnd } = getInputValues();
@@ -44,6 +44,7 @@ export const handleInput = () => {
 
     /** 基本給（円） */
     const basicWage = hourlyWage * minToHour(workMinutes);
+
     /** 法定外残業代（円） */
     const overtimeWage =
       workMinutes > LEGAL_WORK_MINUTES
@@ -51,10 +52,13 @@ export const handleInput = () => {
           minToHour(workMinutes - LEGAL_WORK_MINUTES) *
           PREMIUM_WAGE_RATE
         : 0;
+
     /** 深夜時間帯開始時刻 */
     const lateNightStart = convertTimeToInt("22:00");
+
     /** 深夜時間帯終了時刻 */
     const lateNightEnd = convertTimeToInt("29:00");
+
     /** 休憩時間中の深夜時間（分） */
     const breakMinutesInLateNight = calcOverlap(
       breakStart,
@@ -62,14 +66,17 @@ export const handleInput = () => {
       lateNightStart,
       lateNightEnd
     );
+
     /** 深夜時間（分） */
     const lateNightMinutes =
       calcOverlap(start, end, lateNightStart, lateNightEnd) -
       breakMinutesInLateNight;
+
     /** 深夜残業代（円） */
     const lateNightWage = minToHour(
       lateNightMinutes * hourlyWage * PREMIUM_WAGE_RATE
     );
+
     /** 合計（円） */
     const totalWage = Math.round(basicWage + overtimeWage + lateNightWage);
 
