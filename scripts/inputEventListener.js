@@ -14,6 +14,10 @@ import {
 export const handleInput = () => {
   const { hourlyWage, start, end, breakStart, breakEnd } = getInputValues();
 
+  showNextDay(element.nextDay, end >= ONE_DAY_MINUTES);
+  showNextDay(element.breakStartNextDay, breakStart >= ONE_DAY_MINUTES);
+  showNextDay(element.breakEndNextDay, breakEnd >= ONE_DAY_MINUTES);
+
   try {
     if (hourlyWage <= 0) throw new SyntaxError("時給が未入力です");
     if (Number.isNaN(start)) throw new SyntaxError("始業時刻が未入力です");
@@ -22,10 +26,6 @@ export const handleInput = () => {
       throw new SyntaxError(
         "休憩時間は両方とも入力するか両方とも未入力にしてください"
       );
-
-    showNextDay(element.nextDay, end >= ONE_DAY_MINUTES);
-    showNextDay(element.breakStartNextDay, breakStart >= ONE_DAY_MINUTES);
-    showNextDay(element.breakEndNextDay, breakEnd >= ONE_DAY_MINUTES);
 
     /** 休憩時間（分） */
     const breakMinutes = (() => {
