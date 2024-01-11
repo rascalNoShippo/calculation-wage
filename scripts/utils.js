@@ -6,7 +6,8 @@
  */
 export const convertTimeToInt = (time) => {
   if (!time) return NaN;
-  if (!/^\d{1,2}:\d{2}$/.test(time)) throw new SyntaxError("時刻の形式が不正です");
+  if (!/^\d{1,2}:\d{2}$/.test(time))
+    throw new SyntaxError("時刻の形式が不正です");
   const [hour, minute] = time.split(":").map((s) => +s);
   return hour * 60 + minute;
 };
