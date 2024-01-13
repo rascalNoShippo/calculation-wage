@@ -2,14 +2,14 @@ import {
   LEGAL_WORK_MINUTES,
   ONE_DAY_MINUTES,
   PREMIUM_WAGE_RATE,
-} from "constants.js";
-import { getInputValues, element, setResult } from "elements.js";
+} from "./constants.js";
+import { getInputValues, element, setResult } from "./elements.js";
 import {
   calcOverlap,
   convertTimeToInt,
   minToHour,
   showNextDay,
-} from "utils.js";
+} from "./utils.js";
 
 export const handleInput = () => {
   const { hourlyWage, start, end, breakStart, breakEnd } = getInputValues();
