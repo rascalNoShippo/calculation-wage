@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
     "target": "es2021",
-    "checkJs": true
+    "allowJs": true,
+    "checkJs": true,
+    "strict": true
   }
 }

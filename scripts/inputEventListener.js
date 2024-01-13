@@ -2,14 +2,14 @@ import {
   LEGAL_WORK_MINUTES,
   ONE_DAY_MINUTES,
   PREMIUM_WAGE_RATE,
-} from "./constants.js";
-import { getInputValues, element, setResult } from "./elements.js";
+} from "constants.js";
+import { getInputValues, element, setResult } from "elements.js";
 import {
   calcOverlap,
   convertTimeToInt,
   minToHour,
   showNextDay,
-} from "./utils.js";
+} from "utils.js";
 
 export const handleInput = () => {
   const { hourlyWage, start, end, breakStart, breakEnd } = getInputValues();
@@ -19,14 +19,6 @@ export const handleInput = () => {
   showNextDay(element.breakEndNextDay, breakEnd >= ONE_DAY_MINUTES);
 
   try {
-    if (hourlyWage <= 0) throw new SyntaxError("時給が未入力です");
-    if (Number.isNaN(start)) throw new SyntaxError("始業時刻が未入力です");
-    if (Number.isNaN(end)) throw new SyntaxError("終業時刻が未入力です");
-    if (Number.isNaN(breakStart) !== Number.isNaN(breakEnd))
-      throw new SyntaxError(
-        "休憩時間は両方とも入力するか両方とも未入力にしてください"
-      );
-
     /** 休憩時間（分） */
     const breakMinutes = (() => {
       const min = breakEnd - breakStart;
@@ -36,7 +28,6 @@ export const handleInput = () => {
     // 休憩時間が勤務時間に含まれているかチェック
     (() => {
       const breakMinutesInWork = calcOverlap(start, end, breakStart, breakEnd);
-      if (Number.isNaN(breakMinutesInWork)) return;
       if (breakMinutesInWork !== breakMinutes)
         throw new RangeError("休憩時間が勤務時間に含まれていません");
     })();
@@ -56,10 +47,10 @@ export const handleInput = () => {
         : 0;
 
     /** 深夜時間帯開始時刻 */
-    const lateNightStart = convertTimeToInt("22:00");
+    const lateNightStart = Number(convertTimeToInt("22:00"));
 
     /** 深夜時間帯終了時刻 */
-    const lateNightEnd = convertTimeToInt("29:00");
+    const lateNightEnd = Number(convertTimeToInt("29:00"));
 
     /** 休憩時間中の深夜時間（分） */
     const breakMinutesInLateNight = calcOverlap(
