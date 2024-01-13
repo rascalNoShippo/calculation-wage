@@ -1,4 +1,4 @@
-import { DEFAULT_HOURLY_WAGE, ONE_DAY_MINUTES } from "constants.js";
+import { DEFAULT_HOURLY_WAGE, ONE_DAY_MINUTES } from "./constants.js";
 import {
   convertMinutesToTime,
   convertTimeToInt,
