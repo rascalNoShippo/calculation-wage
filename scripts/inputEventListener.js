@@ -29,7 +29,7 @@ export const handleInput = () => {
     (() => {
       const breakMinutesInWork = calcOverlap(start, end, breakStart, breakEnd);
       const times = [start, end, breakStart, breakEnd];
-      if (times.join() !== [...times].sort((a, b) => a - b).join())
+      if (times.join() === [...times].sort((a, b) => a - b).join())
         throw new RangeError("休憩時間が勤務時間に含まれていません");
     })();
 
