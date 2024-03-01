@@ -22,7 +22,7 @@ export const convertTimeToInt = (time) => {
  */
 export const convertMinutesToTime = (minutes) => {
   if (minutes === undefined) return "";
-  const hour = Math.floor(minutes / 60);
+  const hour = Math.trunc(minutes / 60);
   const minute = minutes % 60;
   return `${hour ? `${hour}時間` : ""}${minute}分`;
 };

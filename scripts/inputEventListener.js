@@ -12,13 +12,13 @@ import {
 } from "./utils.js";
 
 export const handleInput = () => {
-  const { hourlyWage, start, end, breakStart, breakEnd } = getInputValues();
-
-  showNextDay(element.nextDay, end >= ONE_DAY_MINUTES);
-  showNextDay(element.breakStartNextDay, breakStart >= ONE_DAY_MINUTES);
-  showNextDay(element.breakEndNextDay, breakEnd >= ONE_DAY_MINUTES);
-
   try {
+    const { hourlyWage, start, end, breakStart, breakEnd } = getInputValues();
+
+    showNextDay(element.nextDay, end >= ONE_DAY_MINUTES);
+    showNextDay(element.breakStartNextDay, breakStart >= ONE_DAY_MINUTES);
+    showNextDay(element.breakEndNextDay, breakEnd >= ONE_DAY_MINUTES);
+
     /** 休憩時間（分） */
     const breakMinutes = (() => {
       const min = breakEnd - breakStart;
