@@ -24,21 +24,9 @@ export const element = /**
 
 /** 入力欄・計算結果をリセットする */
 export const resetAll = () => {
-  const {
-    hourlyWage,
-    startTime,
-    endTime,
-    breakStartTime,
-    breakEndTime,
-    nextDay,
-    breakStartNextDay,
-    breakEndNextDay,
-    errorMsg,
-  } = element;
-
   Object.values(element).forEach((e) => {
     if (e instanceof HTMLInputElement) {
-      e.value = "";
+      e.value = e.id === "hourly_wage" ? `${DEFAULT_HOURLY_WAGE}` : "";
       return;
     }
     if (!(e instanceof HTMLButtonElement)) {
@@ -47,15 +35,6 @@ export const resetAll = () => {
   });
 
   setResult();
-  hourlyWage.value = `${DEFAULT_HOURLY_WAGE}`;
-  startTime.value = "";
-  endTime.value = "";
-  breakStartTime.value = "";
-  breakEndTime.value = "";
-  nextDay.textContent = "";
-  breakStartNextDay.textContent = "";
-  breakEndNextDay.textContent = "";
-  errorMsg.textContent = "";
 };
 
 /**
