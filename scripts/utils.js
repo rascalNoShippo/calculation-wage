@@ -1,3 +1,6 @@
+/** @typedef {import("./constants").ElementId} ElementId */
+/** @typedef {import("./constants").ElementTypeMap} ElementTypeMap */
+
 /**
  * HH:MM 形式の時刻を当日0時からの経過分数に変換する
  * @param {string} time - HH:MM 形式の時刻（未入力の場合はNaNを返す）
@@ -6,7 +9,8 @@
  */
 export const convertTimeToInt = (time) => {
   if (!time) return;
-  if (!/^\d{1,2}:\d{2}$/.test(time)) throw new SyntaxError("時刻の形式が不正です");
+  if (!/^\d{1,2}:\d{2}$/.test(time))
+    throw new SyntaxError("時刻の形式が不正です");
   const [hour, minute] = time.split(":").map((s) => +s);
   return hour * 60 + minute;
 };
@@ -47,13 +51,14 @@ export const toPrice = (value) =>
 
 /**
  * getElementById の結果を返すが、要素が見つからない場合は例外を投げる
- * @param {string} id
- * @returns {HTMLElement}
+ * @template {ElementId} T
+ * @param {T} id - 要素のID
+ * @returns {ElementTypeMap[T]}
  * @throws {Error} 要素が見つからない場合
  */
 export const getElementByIdOrThrow = (id) => {
   const e = document.getElementById(id);
-  if (e) return e;
+  if (e) return /** @type {ElementTypeMap[T]} */ (e);
 
   const message = `id=${id} の要素が見つかりません`;
   alert(message);

@@ -1,4 +1,8 @@
-import { DEFAULT_HOURLY_WAGE, ONE_DAY_MINUTES } from "./constants.js";
+import {
+  DEFAULT_HOURLY_WAGE,
+  ONE_DAY_MINUTES,
+  ElementIdEnum,
+} from "./constants.js";
 import {
   convertMinutesToTime,
   convertTimeToInt,
@@ -6,36 +10,17 @@ import {
   toPrice,
 } from "./utils.js";
 
-export const element = {
-  hourlyWage: /**@type {HTMLInputElement}*/ (
-    getElementByIdOrThrow("hourly_wage")
-  ),
-  startTime: /**@type {HTMLInputElement}*/ (
-    getElementByIdOrThrow("start_time")
-  ),
-  endTime: /**@type {HTMLInputElement}*/ (getElementByIdOrThrow("end_time")),
-  breakStartTime: /**@type {HTMLInputElement}*/ (
-    getElementByIdOrThrow("break_start_time")
-  ),
-  breakEndTime: /**@type {HTMLInputElement}*/ (
-    getElementByIdOrThrow("break_end_time")
-  ),
-  nextDay: getElementByIdOrThrow("next_day"),
-  breakStartNextDay: getElementByIdOrThrow("break_start_next_day"),
-  breakEndNextDay: getElementByIdOrThrow("break_end_next_day"),
-  resetButton: /**@type {HTMLButtonElement}*/ (
-    getElementByIdOrThrow("reset_button")
-  ),
-  errorMsg: getElementByIdOrThrow("error_msg"),
-  workTime: getElementByIdOrThrow("work_time"),
-  lateNightTime: getElementByIdOrThrow("late_night_time"),
-  breakTime: getElementByIdOrThrow("break_time"),
-  breakLateNightTime: getElementByIdOrThrow("break_late_night_time"),
-  basicWage: getElementByIdOrThrow("basic_wage"),
-  overtimeWage: getElementByIdOrThrow("overtime_wage"),
-  lateNightWage: getElementByIdOrThrow("late_night_wage"),
-  totalWage: getElementByIdOrThrow("total_wage"),
-};
+export const element = /**
+  @type {{
+    [key in keyof typeof ElementIdEnum]: 
+      import("./constants").ElementTypeMap[ElementIdEnum[key]]
+  }}
+*/ (
+  Object.entries(ElementIdEnum).reduce((obj, [key, id]) => {
+    const element = getElementByIdOrThrow(id);
+    return Object.assign(obj, { [key]: element });
+  }, {})
+);
 
 /** 入力欄・計算結果をリセットする */
 export const resetAll = () => {
@@ -51,6 +36,16 @@ export const resetAll = () => {
     errorMsg,
   } = element;
 
+  Object.values(element).forEach((e) => {
+    if (e instanceof HTMLInputElement) {
+      e.value = "";
+      return;
+    }
+    if (!(e instanceof HTMLButtonElement)) {
+      e.textContent = "";
+    }
+  });
+
   setResult();
   hourlyWage.value = `${DEFAULT_HOURLY_WAGE}`;
   startTime.value = "";
@@ -65,24 +60,24 @@ export const resetAll = () => {
 
 /**
  * 計算結果を表示する(引数がNaNの場合は空文字列を表示する)
- * @param {number | undefined} workMinutes - 勤務時間（分、休憩時間を除く）
- * @param {number | undefined} lateNightMinutes - 深夜時間（分）
- * @param {number | undefined} breakMinutes - 休憩時間（分）
- * @param {number | undefined} breakLateNightMinutes - 休憩時間中の深夜時間（分）
- * @param {number | undefined} basicWage - 基本給（円）
- * @param {number | undefined} overtimeWage - 法定外残業代（円）
- * @param {number | undefined} lateNightWage - 深夜残業代（円）
- * @param {number | undefined} totalWage - 合計（円）
+ * @param {number} [workMinutes] - 勤務時間（分、休憩時間を除く）
+ * @param {number} [lateNightMinutes] - 深夜時間（分）
+ * @param {number} [breakMinutes] - 休憩時間（分）
+ * @param {number} [breakLateNightMinutes] - 休憩時間中の深夜時間（分）
+ * @param {number} [basicWage] - 基本給（円）
+ * @param {number} [overtimeWage] - 法定外残業代（円）
+ * @param {number} [lateNightWage] - 深夜残業代（円）
+ * @param {number} [totalWage] - 合計（円）
  */
 export const setResult = (
-  workMinutes = undefined,
-  lateNightMinutes = undefined,
-  breakMinutes = undefined,
-  breakLateNightMinutes = undefined,
-  basicWage = undefined,
-  overtimeWage = undefined,
-  lateNightWage = undefined,
-  totalWage = undefined
+  workMinutes,
+  lateNightMinutes,
+  breakMinutes,
+  breakLateNightMinutes,
+  basicWage,
+  overtimeWage,
+  lateNightWage,
+  totalWage
 ) => {
   const {
     workTime,
