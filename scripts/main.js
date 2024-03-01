@@ -9,8 +9,9 @@ const inputElements = Object.values(element).filter(
 inputElements.forEach((e, i, a) => {
   const length = a.length;
   e.addEventListener("input", handleInput);
-  e.addEventListener("keydown", ({ key }) => {
-    if (key === "Enter") a[(i + 1) % length].focus();
+  e.addEventListener("keydown", ({ key, shiftKey }) => {
+    const nextIndex = (i + (shiftKey ? -1 : 1)) % length;
+    if (key === "Enter") a[nextIndex].focus();
   });
 });
 
