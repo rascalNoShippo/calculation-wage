@@ -80,3 +80,15 @@ export const showNextDay = (element, isNextDay) => {
  * @returns {number}
  */
 export const minToHour = (min) => min / 60;
+
+/**
+ * 割り算のあまり（常に非負の値を返す）
+ * @param {number} dividend - 被除数
+ * @param {number} divisor - 除数
+ * @returns {number}
+ * @example
+ * console.log(mod(5, 3), 5 % 3); // 2 2
+ * console.log(mod(-5, 3), -5 % 3); // 1 -2
+ */
+export const mod = (dividend, divisor) =>
+  ((dividend % divisor) + divisor) % divisor;
